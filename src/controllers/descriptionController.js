@@ -41,3 +41,17 @@ exports.getDescriptionById = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener la descripción', error: err.message });
   }
 };
+
+exports.getAllDescriptions = async (req, res) => {
+    try {
+      const descriptions = await RouteDescription.find({}, 'routeId description'); // Seleccionar solo routeId y description
+      
+      if (descriptions.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron descripciones' });
+      }
+  
+      res.status(200).json(descriptions);
+    } catch (err) {
+      res.status(500).json({ message: 'Error al obtener las descripciones', error: err.message });
+    }
+  };
