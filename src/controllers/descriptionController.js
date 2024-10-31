@@ -8,12 +8,10 @@ exports.addDescription = async (req, res) => {
   }
 
   try {
-    const routeExists = await Route.findOne({ routeId });
-
-    if (!routeExists) {
-      return res.status(404).json({ message: 'La ruta con el routeId proporcionado no existe' });
-    }
-
+    //const routeExists = await Route.findOne({ routeId });
+    //if (!routeExists) {
+    //  return res.status(404).json({ message: 'La ruta con el routeId proporcionado no existe' });
+    ///}
     const updatedDescription = await RouteDescription.findOneAndUpdate(
       { routeId },
       { description },
