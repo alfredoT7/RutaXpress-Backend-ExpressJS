@@ -15,7 +15,7 @@ app.use(express.json());
 app.use('/hello', helloRoute);
 app.use('/routes', routes);
 app.use('/descriptions', descriptionRoutes);
-app.use('/userFavorites', userFavorites);
+app.use('/favorites', userFavorites);
 mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
   .catch(err => console.error('Error al conectar a la base de datos:', err));
