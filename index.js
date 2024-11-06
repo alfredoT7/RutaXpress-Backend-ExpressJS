@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const helloRoute = require('./src/routes/hello');
 const routes = require('./src/routes/routes');
 const descriptionRoutes = require('./src/routes/descriptionRoutes');
+const userFavorites = require('./src/routes/userFavorites');
 require('dotenv').config();
 
 const uri = process.env.MONGODB_URI;
@@ -14,8 +15,8 @@ app.use(express.json());
 app.use('/hello', helloRoute);
 app.use('/routes', routes);
 app.use('/descriptions', descriptionRoutes);
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+app.use('/favorites', userFavorites);
+mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
   .catch(err => console.error('Error al conectar a la base de datos:', err));
 
