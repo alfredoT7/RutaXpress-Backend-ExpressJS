@@ -1,24 +1,5 @@
 const UserFavorites = require('../models/UserFavorites');
-
-exports.createUserFavorites = async (req, res) => {
-  const { idUser, favoriteRoutes } = req.body;
-
-  if (!idUser || !favoriteRoutes) {
-    return res.status(400).json({ error: 'idUser and favoriteRoutes are required' });
-  }
-
-  try {
-    const userFavorites = await UserFavorites.findOneAndUpdate(
-      { idUser },
-      { $set: { favoriteRoutes } },
-      { new: true, upsert: true }
-    );
-    res.status(201).json(userFavorites);
-  } catch (error) {
-    console.error('Error saving user favorites:', error);
-    res.status(500).json({ error: 'Error saving user favorites', details: error.message });
-  }
-};
+const RouteDescription = require('../models/RouteDescription');
 
 exports.addFavoriteRoute = async (req, res) => {
   const { idUser, route } = req.body;
@@ -31,7 +12,7 @@ exports.addFavoriteRoute = async (req, res) => {
     const userFavorites = await UserFavorites.findOneAndUpdate(
       { idUser },
       { $addToSet: { favoriteRoutes: route } },
-      { new: true }
+      { new: true, upsert: true }
     );
     res.status(200).json(userFavorites);
   } catch (error) {
@@ -74,7 +55,20 @@ exports.getUserFavorites = async (req, res) => {
       return res.status(404).json({ error: 'Id no encontrado' });
     }
 
-    res.status(200).json(userFavorites);
+    const favoriteRoutesWithDescriptions = await Promise.all(
+      userFavorites.favoriteRoutes.map(async (routeId) => {
+        const routeDescription = await RouteDescription.findOne({ routeId });
+        return {
+          routeId,
+          description: routeDescription ? routeDescription.description : 'Descripción no encontrada'
+        };
+      })
+    );
+
+    res.status(200).json({
+      idUser: userFavorites.idUser,
+      favoriteRoutes: favoriteRoutesWithDescriptions
+    });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Error', details: error.message });
