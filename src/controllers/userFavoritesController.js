@@ -41,7 +41,7 @@ exports.removeFavoriteRoute = async (req, res) => {
   }
 };
 
-exports.getUserFavorites = async (req, res) => {
+exports.getUserFavoritesAndDescription = async (req, res) => {
   const { idUser } = req.params;
 
   if (!idUser) {
@@ -68,6 +68,29 @@ exports.getUserFavorites = async (req, res) => {
     res.status(200).json({
       idUser: userFavorites.idUser,
       favoriteRoutes: favoriteRoutesWithDescriptions
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error', details: error.message });
+  }
+};
+exports.getUserFavoriteRouteIds = async (req, res) => {
+  const { idUser } = req.params;
+
+  if (!idUser) {
+    return res.status(400).json({ error: 'idUser requerido' });
+  }
+
+  try {
+    const userFavorites = await UserFavorites.findOne({ idUser });
+
+    if (!userFavorites) {
+      return res.status(404).json({ error: 'Id no encontrado' });
+    }
+
+    res.status(200).json({
+      idUser: userFavorites.idUser,
+      favoriteRoutes: userFavorites.favoriteRoutes
     });
   } catch (error) {
     console.error('Error:', error);
