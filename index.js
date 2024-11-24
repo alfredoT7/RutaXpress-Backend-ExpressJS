@@ -6,6 +6,8 @@ const helloRoute = require('./src/routes/hello');
 const routes = require('./src/routes/routes');
 const descriptionRoutes = require('./src/routes/descriptionRoutes');
 const userFavorites = require('./src/routes/userFavorites');
+const routeSearchRoutes = require('./src/routes/routeSearchRoutes');
+
 require('dotenv').config();
 
 const uri = process.env.MONGODB_URI;
@@ -16,6 +18,8 @@ app.use('/hello', helloRoute);
 app.use('/routes', routes);
 app.use('/descriptions', descriptionRoutes);
 app.use('/favorites', userFavorites);
+app.use('/route-search', routeSearchRoutes);
+
 mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
   .catch(err => console.error('Error al conectar a la base de datos:', err));
