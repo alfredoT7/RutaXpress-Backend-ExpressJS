@@ -7,6 +7,7 @@ const routes = require('./src/routes/routes');
 const descriptionRoutes = require('./src/routes/descriptionRoutes');
 const userFavorites = require('./src/routes/userFavorites');
 const routeSearchRoutes = require('./src/routes/routeSearchRoutes');
+const driverRoutes = require('./src/routes/driverRoutes');
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.use('/routes', routes);
 app.use('/descriptions', descriptionRoutes);
 app.use('/favorites', userFavorites);
 app.use('/route-search', routeSearchRoutes);
+app.use('/driver-routes', driverRoutes);
 
 mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
