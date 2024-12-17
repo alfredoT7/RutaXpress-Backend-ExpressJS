@@ -139,4 +139,3 @@ exports.getDriverRoutes = async (req, res) => {
   }
 };
 
-/* Registro de user and driver */
