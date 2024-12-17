@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-
 const setupSocket = (server) => {
   const io = new Server(server, {
     cors: {
@@ -7,7 +6,6 @@ const setupSocket = (server) => {
       methods: ["GET", "POST"],
     },
   });
-
   io.on("connection", (socket) => {
     console.log("Usuario conectado:", socket.id);
 
@@ -24,5 +22,4 @@ const setupSocket = (server) => {
     });
   });
 };
-
 module.exports = setupSocket;
