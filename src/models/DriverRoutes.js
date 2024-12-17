@@ -32,6 +32,9 @@ const driverRouteSchema = new mongoose.Schema({
   photoCar: {
     type: String
   },
+  RUAT: {
+    type: String
+  },
   routes: {
     type: [String],
     required: true
