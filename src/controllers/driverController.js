@@ -22,6 +22,7 @@ exports.createDriverWithPhotos = async (req, res) => {
     { name: 'photoLicence', maxCount: 1 },
     { name: 'reversePhotoLicence', maxCount: 1 },
     { name: 'photoCar', maxCount: 1 },
+    { name: 'RUAT', maxCount: 1 }
   ])(req, res, async (err) => {
     if (err) {
       console.error('Error uploading files:', err);
@@ -37,22 +38,23 @@ exports.createDriverWithPhotos = async (req, res) => {
     try {
       const driverRoute = new DriverRoute({
         idUser,
+        routes,
         photoCi: req.files['photoCi']?.[0]?.path,
         reversePhotoCi: req.files['reversePhotoCi']?.[0]?.path,
         photoLicence: req.files['photoLicence']?.[0]?.path,
         reversePhotoLicence: req.files['reversePhotoLicence']?.[0]?.path,
         photoCar: req.files['photoCar']?.[0]?.path,
+        RUAT: req.files['RUAT']?.[0]?.path,
         Marcca,
         Model,
         Placa,
-        routes: JSON.parse(routes),
       });
 
       await driverRoute.save();
       res.status(201).json(driverRoute);
     } catch (error) {
-      console.error('Error saving driver route:', error);
-      res.status(500).json({ error: 'Error saving driver route', details: error.message });
+      console.error('Error creating driver with photos:', error);
+      res.status(500).json({ error: 'Error creating driver with photos', details: error.message });
     }
   });
 };
@@ -138,4 +140,5 @@ exports.getDriverRoutes = async (req, res) => {
     res.status(500).json({ error: 'Error', details: error.message });
   }
 };
+
 
