@@ -1,21 +1,28 @@
-const { server } = require('socket.io');
+const { Server } = require("socket.io");
 
-module.exports = function(io) {
-    // Evento para cuando un usuario se conecta
-    io.on('connection', (socket) => {
-      console.log('Un usuario se ha conectado', socket.id);
-  
-      // Evento para recibir la ubicación del usuario
-      socket.on('sendLocation', (data) => {
-        console.log(`Ubicación de ${socket.id}:`, data);
-        // Emitir la ubicación a otros usuarios (si es necesario)
-        io.emit('userLocation', data);
-      });
-  
-      // Evento para cuando el usuario se desconecta
-      socket.on('disconnect', () => {
-        console.log('Un usuario se ha desconectado', socket.id);
-      });
+const setupSocket = (server) => {
+  const io = new Server(server, {
+    cors: {
+      origin: process.env.CLIENT_URL,
+      methods: ["GET", "POST"],
+    },
+  });
+
+  io.on("connection", (socket) => {
+    console.log("Usuario conectado:", socket.id);
+
+    // Escucha la ubicación del conductor
+    socket.on("sendLocation", (location) => {
+      console.log("Ubicación recibida:", location);
+
+      // Envía la ubicación a los pasajeros
+      io.emit("receiveLocation", location);
     });
-  };
-  
+
+    socket.on("disconnect", () => {
+      console.log("Usuario desconectado:", socket.id);
+    });
+  });
+};
+
+module.exports = setupSocket;
