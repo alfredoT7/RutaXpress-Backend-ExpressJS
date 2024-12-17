@@ -59,7 +59,23 @@ exports.createDriverWithPhotos = async (req, res) => {
   });
 };
 
+exports.getDriverDetailById = async (req, res) => {
+  try{
+    const {idUser} = req.params
 
+    const driver = await DriverRoute.findOne({idUser})
+    if(!driver){
+      return res.status(404).json({error: 'Driver not found', details: 'Driver'});
+      }
+
+      const {routes, Placa, Marca} = driver;
+
+      return res.status(200).json({idUser, routes, Placa, Marca,});
+    } catch (error) {
+        console.error('Error getting driver detail:', error);
+        return res.status(500).json({ message: 'Error getting driver detail' });
+    }
+  }
 
 
 exports.createDriverRoutes = async (req, res) => {
