@@ -6,5 +6,8 @@ router.post('/create', driverController.createDriverRoutes);
 router.post('/add', driverController.addRoute);
 router.post('/remove', driverController.removeRoute);
 router.get('/:idUser', driverController.getDriverRoutes);
+router.post('/createDriver', driverController.createDriverWithPhotos);
+router.get('/getDriverRoute/:idUser', driverController.getDriverDetailById)
+
 
 module.exports = router;
