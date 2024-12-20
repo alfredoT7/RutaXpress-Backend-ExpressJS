@@ -9,6 +9,12 @@ const userFavorites = require('./src/routes/userFavorites');
 const routeSearchRoutes = require('./src/routes/routeSearchRoutes');
 const driverRoutes = require('./src/routes/driverRoutes');
 const locatioRoutes = require('./src/routes/location.routes');
+//for socket
+const http = require('http');
+const setupSocket = require('./src/config/socket');
+const server = http.createServer(app);
+setupSocket(server);
+
 
 require('dotenv').config();
 
@@ -28,6 +34,9 @@ mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
   .catch(err => console.error('Error al conectar a la base de datos:', err));
 
-app.listen(port, () => {
+/*app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
+}); SOLO APLICA PARA EXPRESS, AHORA OCUPAMOS WEBSOCKET INCLUIDO*/
+server.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
