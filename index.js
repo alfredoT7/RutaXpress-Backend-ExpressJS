@@ -23,9 +23,6 @@ app.use('/favorites', userFavorites);
 app.use('/route-search', routeSearchRoutes);
 app.use('/driver-routes', driverRoutes);
 app.use('/location', locatioRoutes);
-app.get('/testDeply', (req, res) => {
-  res.send('cambios sincronizados al repositorio');
-});
 
 mongoose.connect(uri, {})
   .then(() => console.log('Conectado a la base de datos'))
