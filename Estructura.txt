@@ -1,0 +1,15 @@
+project/
+├── src/
+│   ├── config/
+│   │   └── config.js
+│   │   └── sockets.js
+│   ├── controllers/
+│   │   ├── location.controller.js
+│   ├── routes/
+│   │   ├── location.routes.js
+│   ├── models/
+│   │   ├── user.model.js
+│   │   ├── route.model.js
+│   ├── services/
+├── index.js
+├── .env
