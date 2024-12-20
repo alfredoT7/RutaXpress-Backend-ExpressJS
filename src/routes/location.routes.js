@@ -1,8 +1,7 @@
 const express = require('express');
-const { saveLocation } = require('../controllers/ubicationController');
-
+const { getDriverLocations } = require('../controllers/location');
 const router = express.Router();
 
-router.post('/save', saveLocation);
+router.get('/drivers/:routeId', getDriverLocations);
 
 module.exports = router;

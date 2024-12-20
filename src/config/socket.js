@@ -1,31 +1,25 @@
-const { Server } = require("socket.io");
-const setupSocket = (server) => {
-  const io = new Server(server, {
-    cors: {
-      origin: process.env.CLIENT_URL,
-      methods: ["GET", "POST"],
-    },
-  });
-  io.on("connection", (socket) => {
-    console.log("Usuario conectado:", socket.id);
+const { io } = require('../../index');
 
-    // Escucha la ubicación del conductor
-    socket.on("sendLocation", (location) => {
-      console.log("Ubicación recibida:", location);
+const activeDrivers = {};
 
-      // Envía la ubicación a los pasajeros
-      io.emit("receiveLocation", location);
+io.on('connection', (socket) => {
+    console.log('Nuevo cliente conectado:', socket.id);
+
+    // Manejar ubicación de conductores
+    socket.on('driverLocation', (data) => {
+        const { driverId, latitude, longitude, routeId } = data;
+        activeDrivers[driverId] = { latitude, longitude, routeId };
+        socket.join(routeId); 
+        io.to(routeId).emit('updateDriverLocations', activeDrivers);
     });
 
-    socket.on("disconnect", () => {
-      console.log("Usuario desconectado:", socket.id);
+    // Manejar desconexión
+    socket.on('disconnect', () => {
+        console.log('Cliente desconectado:', socket.id);
+        Object.keys(activeDrivers).forEach((driverId) => {
+            if (activeDrivers[driverId].socketId === socket.id) {
+                delete activeDrivers[driverId];
+            }
+        });
     });
-
-    /*socket.on("sendLocation", ({ location, targetId }) => {
-      socket.to(targetId).emit("receiveLocation", location);
-    });
-    EN CASO DE QUE ENVIEMOS DATOS A SOLO UN TIPO DE USUARIO*/
-    
-  });
-};
-module.exports = setupSocket;
+});
